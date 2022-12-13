@@ -51,8 +51,8 @@ int wyrownaj(string &s, int ile, int kier, char za_malo)
     wsk1 = wsk2 = -1;
     for (i = 0; i < ile; i++)
     {
-        wsk1 = znajdz(s, za_malo, kier, wsk1 != -1 ? wsk1 : (s.size() % 2 ? s.size() / 2 + kier : s.size() + (1 - kier) / 2));
-        wsk2 = znajdz(s, za_duzo, kier * (-1), wsk2 != -1 ? wsk2 : (s.size() % 2 ? s.size() / 2 + kier * (-1) : s.size() + (1 - kier * (-1)) / 2));
+        wsk1 = znajdz(s, za_malo, kier, wsk1 != -1 ? wsk1 : (s.size() % 2 ? s.size() / 2 + kier : s.size() / 2 -1 + (1 + kier)/2));
+        wsk2 = znajdz(s, za_duzo, kier * (-1), wsk2 != -1 ? wsk2 : (s.size() % 2 ? s.size() / 2 + kier * (-1) : s.size() / 2 - 1 + (1 + kier * (-1)) / 2));
 
         s[wsk1] = za_duzo;
         s[wsk2] = za_malo;
@@ -96,8 +96,10 @@ int main()
     string s;
     cin >> s;
     if (czyPalindrom(s))
-        cout << 0 << endl;
-
+    {
+        cout << 0 << "\n";
+        return 0;
+    }
     // int *licznosci = new int[2]{0};
     int licznosci[2]{};
     int polowa;
@@ -110,7 +112,7 @@ int main()
     int sum_l = licznosci[0] + licznosci[1];
     if (sum_l % 2 == 1 && s.size() % 2 == 0)
     {
-        cout << -1;
+        cout << -1 << "\n";
         return 0;
     }
 
@@ -122,26 +124,28 @@ int main()
             suma_operacji += ustaw_srodek(s, 'a', left);
         else
         {
-            suma_operacji += ustaw_srodek(s, 'b', left);
-            if (left)
-            {
-                licznosci[0]++;
-                licznosci[1]--;
-            }
+            int dodane = ustaw_srodek(s, 'b', left);
+            suma_operacji += dodane;
+            if (dodane)
+                if (left)
+                {
+                    licznosci[0]++;
+                    licznosci[1]--;
+                }
 
-            else
-                licznosci[1]--;
+                else
+                    licznosci[1]--;
         }
     }
 
     if (licznosci[0] != licznosci[1])
-        suma_operacji += wyrownaj(s, max(abs(licznosci[0] - licznosci[1]) / 2, 1), licznosci[0] > licznosci[1] ? -1 : 1, 'a');
+        suma_operacji += wyrownaj(s, abs(licznosci[0] - licznosci[1]) / 2, licznosci[0] > licznosci[1] ? -1 : 1, 'a');
     suma_operacji += ustaw_poprawnie(s);
     // for (auto el : s)
     // {
     //     cout << el;
     // }
     // cout << endl;
-    cout << suma_operacji << endl;
+    cout << suma_operacji << "\n";
     return 0;
 }

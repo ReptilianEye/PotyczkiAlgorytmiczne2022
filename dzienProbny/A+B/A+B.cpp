@@ -8,10 +8,15 @@ int main()
     string a, b;
     cin >> a;
     cin >> b;
-    n = max(a.size(), b.size()) + 1;
+    if (a.size() < b.size())
+    {
+        string c = a;
+        a = b;
+        b = c;
+    }
+    n = a.size() + 1;
     int sum[n]{0};
     for (i = 0; i < n; i++)
-
         sum[i + 1] = a[i] - '0';
     i = n - 1;
     j = b.size() - 1;
